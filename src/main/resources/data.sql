@@ -1,0 +1,2 @@
+INSERT INTO PARTIDA( HOST_NAME , HOST_IP, GUEST_NAME, GUEST_IP, TABLERO, TURNO, EXISTE_GANADOR) VALUES( 'Emar' , 'ip1', 'jugador2', 'ipjugador2', 'bb,bn,bbnn,bn,b,,bb', 'blanco', false)
+INSERT INTO PARTIDA( HOST_NAME , HOST_IP, GUEST_NAME, GUEST_IP, TABLERO, TURNO, EXISTE_GANADOR) VALUES( 'jugador3' , 'ip3', 'jugador4', 'ipjugador4', 'bbnn,bn,bbnn,bn,b,nn,bb', 'negro', false)
