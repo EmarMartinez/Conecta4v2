@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import java.util.Arrays;
 
 
 @Entity
@@ -66,12 +67,49 @@ public class Partida {
     }
 
     public Partida joinGame(PartidaNoIdDto partidaDto) {
-        String turno = Math.random() > 0.5 ? "Blanco" : "Negro";
+        String turno = Math.random() > 0.5 ? "Host" : "Guest";
         this.tablero = "000000,000000,000000,000000,000000,000000,000000";
         this.setTurno(turno);
         this.setGuest_name(partidaDto.getGuest_name());
         this.setGuest_ip(partidaDto.getGuest_ip());
         this.setExiste_ganador(false);
         return this;
+    }
+
+    public PartidaDto play(int columna) {
+        String[] tablero = this.getTablero().split(",");
+        char[] array = tablero[columna].toCharArray();
+        for(int i = 0; i<6; i++) {
+            if(array[i] == '0') {
+                if(this.getTurno().equals("Host")) {
+                    array[i] = 'H';
+                }
+                else {
+                    array[i] = 'G';
+                }
+                break;
+            }
+        }
+        tablero[columna] = (Character.toString(array[0])+
+                Character.toString(array[1])+
+                Character.toString(array[2])+
+                Character.toString(array[3])+
+                Character.toString(array[4])+
+                Character.toString(array[5])
+        );
+        String s = Arrays.toString(tablero);
+        this.tablero = tablero[0] + ","+
+                tablero[1] + ","+
+                tablero[2] + ","+
+                tablero[3] + ","+
+                tablero[4] + ","+
+                tablero[5] + ","+
+                tablero[6];
+        if (this.getTurno().equals("Host")) {
+            this.setTurno("Guest");
+        } else {
+            this.setTurno("Host");
+        }
+        return new PartidaDto(this);
     }
 }

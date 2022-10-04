@@ -3,6 +3,7 @@ package com.bosonit.conecta4v2.controller;
 import com.bosonit.conecta4v2.application.PartidaServiceImpl;
 import com.bosonit.conecta4v2.controller.dto.PartidaDto;
 import com.bosonit.conecta4v2.controller.dto.PartidaNoIdDto;
+import com.bosonit.conecta4v2.domain.Partida;
 import com.bosonit.conecta4v2.util.PartidaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.awt.*;
 
 @RestController
 @RequestMapping("partidas")
@@ -52,7 +52,20 @@ public class PartidaController {
     @Autowired
     PartidaUtil partidaUtil;
     @PostMapping("pruebaevaluacion")
-    public PartidaDto prueba(@RequestBody PartidaDto partidaDto) {
-        return partidaUtil.evaluateGame(partidaDto);
+    public Partida prueba(@RequestBody Partida partida) {
+        return partidaUtil.evaluateGame(partida);
     }
+
+    @PostMapping("/play/{gameid}/{nombre}")
+    public Mono<PartidaDto> play(@RequestParam int columna, @PathVariable int gameid, @PathVariable String nombre) {
+        return partidaService.play(gameid,nombre,columna);
+    }
+
+
+    @PostMapping("pruebameterficha")
+    public PartidaDto prueba(@RequestParam int columna, @RequestBody PartidaDto partidaDto) {
+        return new Partida(partidaDto).play(columna);
+    }
+
+    
 }

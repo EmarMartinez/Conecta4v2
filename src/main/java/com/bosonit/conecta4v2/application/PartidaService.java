@@ -12,4 +12,6 @@ public interface PartidaService {
     Mono<PartidaDto> updateGame(PartidaDto partidaDto, Integer id);
     Mono<PartidaNoIdDto> saveGame(PartidaNoIdDto partidaDto);
     Mono<PartidaDto> joinGame(Integer id, PartidaNoIdDto partidaDto);
+
+    Mono<PartidaDto> play(int gameid, String nombre, int columna);
 }

@@ -11,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-
 
 @Service
 public class PartidaServiceImpl implements PartidaService{
@@ -79,5 +77,18 @@ public class PartidaServiceImpl implements PartidaService{
                 .doOnNext(n -> n.joinGame(partidaDto))
                 .flatMap(partidaRepository::save)
                 .map(PartidaDto::new);
+    }
+
+    @Override
+    public Mono<PartidaDto> play(int gameid, String nombre, int columna) {
+        return partidaRepository.findById(gameid)
+                .switchIfEmpty(Mono.error(new Exception("Partida no encontrada")))
+                .filter(n -> partidaUtil.turnCheck(n,nombre))
+                .switchIfEmpty(Mono.error(new Exception("No es tu turno")))
+                .doOnNext(n -> n.play(columna))
+                .doOnNext(n -> partidaUtil.evaluateGame(n))
+                .flatMap(partidaRepository::save)
+                .map(PartidaDto::new);
+
     }
 }
