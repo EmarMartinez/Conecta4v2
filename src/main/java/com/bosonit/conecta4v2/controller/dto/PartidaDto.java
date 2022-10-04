@@ -18,6 +18,7 @@ public class PartidaDto {
     String tablero;
     String turno;
     Boolean existe_ganador;
+    String ganador;
 
     public PartidaDto (Partida partida) {
         this.id = partida.getId();
@@ -28,5 +29,6 @@ public class PartidaDto {
         this.tablero = partida.getTablero();
         this.turno = partida.getTurno();
         this.existe_ganador = partida.getExiste_ganador();
+        this.ganador = partida.getGanador();
     }
 }

@@ -16,6 +16,7 @@ public class PartidaNoIdDto {
     String tablero;
     String turno;
     Boolean existe_ganador;
+    String ganador;
 
     public PartidaNoIdDto (Partida partida) {
         this.host_name = partida.getHost_name();
@@ -25,5 +26,6 @@ public class PartidaNoIdDto {
         this.tablero = partida.getTablero();
         this.turno = partida.getTurno();
         this.existe_ganador = partida.getExiste_ganador();
+        this.ganador = partida.getGanador();
     }
 }

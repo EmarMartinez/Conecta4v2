@@ -4,16 +4,24 @@ import com.bosonit.conecta4v2.controller.dto.PartidaDto;
 import com.bosonit.conecta4v2.controller.dto.PartidaNoIdDto;
 import com.bosonit.conecta4v2.domain.Partida;
 import com.bosonit.conecta4v2.infraestructure.PartidaRepository;
+import com.bosonit.conecta4v2.util.PartidaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+
 
 @Service
 public class PartidaServiceImpl implements PartidaService{
 
     @Autowired
     PartidaRepository partidaRepository;
+
+    @Autowired
+    PartidaUtil partidaUtil;
 
     @Override
     public Mono<PartidaDto> getGame(Integer id) {
@@ -26,6 +34,7 @@ public class PartidaServiceImpl implements PartidaService{
     public Flux<PartidaDto> getAllGames() {
         return partidaRepository.findAll()
                 .map(PartidaDto::new);
+
     }
 
     @Override
@@ -59,4 +68,16 @@ public class PartidaServiceImpl implements PartidaService{
                 .map(PartidaNoIdDto::new);
     }
 
+    @Override
+    @Transactional
+    public Mono<PartidaDto> joinGame(Integer id, PartidaNoIdDto partidaDto) {
+
+        return partidaRepository.findById(id)
+                .switchIfEmpty(Mono.error(new Exception("Id no encontrada")))
+                .filter(partidaUtil::isGuestNull)
+                .switchIfEmpty(Mono.error(new Exception("Partida completa")))
+                .doOnNext(n -> n.joinGame(partidaDto))
+                .flatMap(partidaRepository::save)
+                .map(PartidaDto::new);
+    }
 }

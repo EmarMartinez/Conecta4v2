@@ -11,4 +11,5 @@ public interface PartidaService {
     Mono<Void> deleteGame(Integer id);
     Mono<PartidaDto> updateGame(PartidaDto partidaDto, Integer id);
     Mono<PartidaNoIdDto> saveGame(PartidaNoIdDto partidaDto);
+    Mono<PartidaDto> joinGame(Integer id, PartidaNoIdDto partidaDto);
 }

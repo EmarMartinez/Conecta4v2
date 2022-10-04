@@ -26,6 +26,7 @@ public class Partida {
     String tablero;
     String turno;
     Boolean existe_ganador;
+    String ganador;
 
 
     public Partida(PartidaDto partidaDto) {
@@ -37,6 +38,7 @@ public class Partida {
         this.tablero = partidaDto.getTablero();
         this.turno = partidaDto.getTurno();
         this.existe_ganador = partidaDto.getExiste_ganador();
+        this.ganador = partidaDto.getGanador();
     }
 
     public Partida(PartidaNoIdDto partidaDto) {
@@ -47,6 +49,7 @@ public class Partida {
         this.tablero = partidaDto.getTablero();
         this.turno = partidaDto.getTurno();
         this.existe_ganador = partidaDto.getExiste_ganador();
+        this.ganador = partidaDto.getGanador();
     }
 
 
@@ -58,6 +61,17 @@ public class Partida {
                 this.guest_ip,
                 this.tablero,
                 this.turno,
-                this.existe_ganador);
+                this.existe_ganador,
+                this.ganador);
+    }
+
+    public Partida joinGame(PartidaNoIdDto partidaDto) {
+        String turno = Math.random() > 0.5 ? "Blanco" : "Negro";
+        this.tablero = "000000,000000,000000,000000,000000,000000,000000";
+        this.setTurno(turno);
+        this.setGuest_name(partidaDto.getGuest_name());
+        this.setGuest_ip(partidaDto.getGuest_ip());
+        this.setExiste_ganador(false);
+        return this;
     }
 }
